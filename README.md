@@ -99,4 +99,81 @@ The processed data is then aggregated in Synapse and consumed by an **n8n + Open
                     │ Microsoft Outlook    │
                     │ Personalized Email   │
                     └──────────────────────┘
+---
 
+## 🛠️ Technology Stack
+
+| Technology | Purpose |
+|---|---|
+| **Azure Data Lake Storage Gen2** | Customer raw-file storage and archival |
+| **Azure Data Factory** | Data ingestion, pipeline orchestration and transformation |
+| **ADF Mapping Data Flow** | Booking transformation, validation and insert/update processing |
+| **Azure Cosmos DB for NoSQL** | Booking event source |
+| **Cosmos DB Change Feed** | Incremental CDC event ingestion |
+| **Azure Synapse Analytics** | Analytical warehouse and dimensional data model |
+| **SQL** | Aggregation logic and stored procedures |
+| **n8n** | AI workflow orchestration |
+| **OpenAI** | Personalized email generation |
+| **Microsoft Outlook** | Automated email delivery |
+
+---
+
+## 🎯 Business Problem
+
+An Airbnb-style booking platform generates customer and booking information from multiple operational sources.
+
+The data engineering solution needs to:
+
+1. Ingest customer information from cloud storage.
+2. Keep the customer dimension up to date.
+3. Capture incremental booking changes using CDC.
+4. Validate incoming booking events.
+5. Insert new bookings and update existing bookings.
+6. Maintain analytical tables in Azure Synapse Analytics.
+7. Generate business-level booking aggregations.
+8. Use processed data to automate personalized customer communication.
+
+---
+
+## 🔄 Customer Data Pipeline
+
+Customer data is stored in **Azure Data Lake Storage Gen2 (ADLS Gen2)** and processed through Azure Data Factory.
+
+### Storage Structure
+
+```text
+ADLS Gen2
+└── airbnb
+    ├── customer-raw-data
+    └── customer-data-archive
+Get Metadata
+      ↓
+ForEach Customer File
+      ↓
+Copy Customer Data
+      ↓
+Synapse dim_customer
+      ↓
+Archive Processed File
+      ↓
+Delete Source File
+
+---
+
+## 🔁 Booking CDC Pipeline
+
+Booking events are stored in **Azure Cosmos DB for NoSQL**.
+
+### Cosmos DB Source
+
+```text
+Azure Cosmos DB
+└── Container: bookings
+
+Cosmos DB Change Feed
+          ↓
+New_BookingTransformation
+          ↓
+BookingAggregation Stored Procedure
+          ↓
+Synapse fact_booking
