@@ -1,0 +1,47 @@
+# Secrets & Credentials
+.env
+.env.*
+*.key
+*.pem
+*.pfx
+*.p12
+secrets/
+credentials/
+credentials.json
+secrets.json
+
+# Azure / Cloud credentials
+azure_credentials.json
+service_principal.json
+*credential*
+*secret*
+*password*
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+*.swo
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Logs / Temporary Files
+*.log
+*.tmp
+*.temp
+
+# n8n
+.n8n/
