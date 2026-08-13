@@ -200,3 +200,130 @@ New_BookingTransformation
 BookingAggregation Stored Procedure
           ↓
 Synapse fact_booking
+
+
+---
+
+## 🏢 Synapse Data Model
+
+The analytical layer is implemented in **Azure Synapse Analytics** using the `airbnb` schema.
+
+### Customer Dimension
+
+**Table:** `airbnb.dim_customer`
+
+The customer dimension contains attributes such as:
+
+- `customer_id`
+- `first_name`
+- `last_name`
+- `email`
+- `phone_number`
+- `address`
+- `city`
+- `state`
+- `country`
+- `zip_code`
+- `signup_date`
+- `last_login`
+- `total_bookings`
+- `total_spent`
+- `preferred_language`
+- `referral_code`
+- `account_status`
+
+### Booking Fact
+
+**Table:** `airbnb.fact_booking`
+
+The booking fact table contains attributes such as:
+
+- `booking_id`
+- `customer_id`
+- `listing_id`
+- `status`
+- `booking_created_at`
+- `checkin_date`
+- `checkout_date`
+- `nights`
+- `lead_time_days`
+- `guests_adults`
+- `guests_children`
+- `guests_infants`
+- `price_nightly`
+- `cleaning_fee`
+- `total_amount`
+- `currency`
+- `country_code`
+- `city`
+- `channel`
+- `device_type`
+- `cancellation_ts`
+- `cancellation_reason`
+- `updated_at`
+
+
+---
+
+## 📊 Booking Aggregation
+
+After successful booking transformation and loading, the pipeline executes a Synapse stored procedure:
+
+**Stored Procedure:** `airbnb.BookingAggregation`
+
+This procedure generates business-level booking metrics from the processed booking data.
+
+### Aggregation Flow
+
+```text
+airbnb.fact_booking
+        ↓
+BookingAggregation
+        ↓
+Business-Level Booking Metrics
+
+---
+
+## 🔗 Master Pipeline Orchestration
+
+The solution uses a master Azure Data Factory pipeline to coordinate the complete data ingestion workflow.
+
+**Master Pipeline:** `New_FinalAirBNBPipeline`
+
+The master pipeline executes the customer and booking pipelines in a controlled sequence.
+
+### Orchestration Flow
+
+```text
+New_FinalAirBNBPipeline
+          │
+          ▼
+New_LoadCustomerDim
+          │
+      Succeeded
+          │
+          ▼
+New_LoadBookingFact
+
+---
+
+## 🤖 AI-Powered Customer Communication
+
+The project extends the Azure data platform with an AI-powered automation workflow using **n8n and OpenAI**.
+
+The workflow retrieves processed business insights from Synapse and uses the contextual information to generate personalized email communication.
+
+### AI Automation Flow
+
+```text
+Azure Synapse Analytics
+          ↓
+Processed Business Insights
+          ↓
+n8n Workflow
+          ↓
+OpenAI Chat Model
+          ↓
+Personalized Email Content
+          ↓
+Microsoft Outlook
