@@ -169,7 +169,7 @@ Booking events are stored in **Azure Cosmos DB for NoSQL**.
 ```text
 Azure Cosmos DB
 └── Container: bookings
-
+```
 Cosmos DB Change Feed
 
 ---
@@ -200,7 +200,7 @@ New_BookingTransformation
 BookingAggregation Stored Procedure
           ↓
 Synapse fact_booking
-
+```
 
 ---
 
@@ -281,7 +281,7 @@ airbnb.fact_booking
 BookingAggregation
         ↓
 Business-Level Booking Metrics
-
+```
 ---
 
 ## 🔗 Master Pipeline Orchestration
@@ -304,7 +304,7 @@ New_LoadCustomerDim
           │
           ▼
 New_LoadBookingFact
-
+```
 ---
 
 ## 🤖 AI-Powered Customer Communication
@@ -327,7 +327,7 @@ OpenAI Chat Model
 Personalized Email Content
           ↓
 Microsoft Outlook
-
+```
 ---
 
 ## 📸 Project Screenshots
