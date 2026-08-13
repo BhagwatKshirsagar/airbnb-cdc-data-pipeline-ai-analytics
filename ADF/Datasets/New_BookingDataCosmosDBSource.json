@@ -1,0 +1,16 @@
+{
+    "name": "New_BookingDataCosmosDBSource",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "CosmosDBConn",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "CosmosDbSqlApiCollection",
+        "schema": {},
+        "typeProperties": {
+            "collectionName": "bookings"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}
