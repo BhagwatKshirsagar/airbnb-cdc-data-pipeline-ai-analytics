@@ -171,6 +171,29 @@ Azure Cosmos DB
 └── Container: bookings
 
 Cosmos DB Change Feed
+
+---
+
+## 🔍 Booking Transformation & Data Quality
+
+The **`New_BookingTransformation`** Mapping Data Flow processes incremental booking events received from the Cosmos DB Change Feed.
+
+### Transformation Flow
+
+```text
+Cosmos DB Change Feed
+          ↓
+Data Quality Check
+          ↓
+Accepted Records
+          ↓
+Lookup Existing booking_id
+          ↓
+Generate Insert / Update Flags
+          ↓
+Final Column Mapping
+          ↓
+Synapse fact_booking
           ↓
 New_BookingTransformation
           ↓
