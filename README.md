@@ -99,7 +99,7 @@ The processed data is then aggregated in Synapse and consumed by an **n8n + Open
                     │ Microsoft Outlook    │
                     │ Personalized Email   │
                     └──────────────────────┘
----
+
 
 ## 🛠️ Technology Stack
 
@@ -327,3 +327,69 @@ OpenAI Chat Model
 Personalized Email Content
           ↓
 Microsoft Outlook
+
+---
+
+## 📸 Project Screenshots
+
+The following screenshots demonstrate the key components implemented in the project.
+
+### Master ADF Pipeline
+
+<p align="center">
+  <img src="Images/01_final_airbnb_pipeline.png" width="900"/>
+</p>
+
+### Customer Ingestion Pipeline
+
+<p align="center">
+  <img src="Images/02_customer_ingestion_pipeline.png" width="900"/>
+</p>
+
+### Booking CDC Pipeline
+
+<p align="center">
+  <img src="Images/03_booking_cdc_pipeline.png" width="900"/>
+</p>
+
+### Booking Transformation Data Flow
+
+<p align="center">
+  <img src="Images/04_booking_transformation_dataflow.png" width="900"/>
+</p>
+
+### Synapse Customer Dimension
+
+<p align="center">
+  <img src="Images/05_dim_customer.png" width="900"/>
+</p>
+
+### Synapse Booking Fact
+
+<p align="center">
+  <img src="Images/06_fact_booking.png" width="900"/>
+</p>
+
+### Booking Aggregation
+
+<p align="center">
+  <img src="Images/07_booking_aggregation.png" width="900"/>
+</p>
+
+### Cosmos DB Booking Container
+
+<p align="center">
+  <img src="Images/08_cosmos_booking_container.png" width="900"/>
+</p>
+
+### n8n AI Automation
+
+<p align="center">
+  <img src="Images/09_n8n_ai_workflow.png" width="900"/>
+</p>
+
+### AI-Generated Email
+
+<p align="center">
+  <img src="Images/10_ai_generated_email.png" width="900"/>
+</p>
