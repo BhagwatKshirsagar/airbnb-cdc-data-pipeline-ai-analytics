@@ -157,7 +157,7 @@ Synapse dim_customer
 Archive Processed File
       ↓
 Delete Source File
-
+```
 ---
 
 ## 🔁 Booking CDC Pipeline
