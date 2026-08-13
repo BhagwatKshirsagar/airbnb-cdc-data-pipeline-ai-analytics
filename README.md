@@ -99,7 +99,7 @@ The processed data is then aggregated in Synapse and consumed by an **n8n + Open
                     │ Microsoft Outlook    │
                     │ Personalized Email   │
                     └──────────────────────┘
-
+```
 
 ## 🛠️ Technology Stack
 
