@@ -1,0 +1,186 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e5bbed0c-b59d-4f59-ba06-04af70b4618d",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Put this query or any other of your choice in Microsofr SQL Node\n\nSELECT TOP 100\n    b.booking_id,\n    b.customer_id,\n    CONCAT(c.first_name, ' ', c.last_name)       AS customer_name,\n    c.email                                       AS customer_email,\n    b.status,\n    b.total_amount,\n    b.currency,\n    CONVERT(varchar(10), b.booking_created_at, 23) AS booking_date,  -- YYYY-MM-DD\n    b.city,\n    b.country_code,\n    b.nights\nFROM airbnb.fact_booking AS b\nJOIN airbnb.dim_customer AS c\n  ON c.customer_id = b.customer_id\nWHERE b.total_amount > 2500\n  AND c.email IS NOT NULL\nORDER BY b.booking_created_at DESC;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftSql",
+      "typeVersion": 1.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "cb6fb7c2-f332-4a10-abd2-b9016934372c",
+      "name": "Microsoft SQL",
+      "credentials": {
+        "microsoftSql": {
+          "id": "AB2vRdVd9cZrvlVP",
+          "name": "Microsoft SQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Return ONLY a valid JSON object with keys \"email\", \"subject\", and \"body\". Do not include any explanation, markdown, or extra text.\n\nWrite a short, warm email for {{ $json.customer_name }} (patil@gmail.com) about their Airbnb booking.\n\nData:\n- Status: {{ $json.status }}\n- Amount: {{ $json.total_amount }}\n- Booking date: {{ $json.booking_date }}\n- City: {{ $json.city }}\n- Country: {{ $json.country_code }}\n\nRules:\n- If status == \"Confirmed\", congratulate and mention booking_date and city.\n- If status == \"Cancelled\", be empathetic and offer help to rebook.\n- Keep it 90 to 140 words. Use Indian English.\n- Write engaging & customized email for each customer, don't use same template",
+        "hasOutputParser": true,
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        448,
+        0
+      ],
+      "id": "d27a8691-c8c5-440a-8e0d-c8a7c5285668",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        384,
+        208
+      ],
+      "id": "2cd1fd91-e153-4e0b-a24e-0ea8b2bba9cc",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "hXMj4hh6wrvdH389",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"email\": { \"type\": \"string\" },\n    \"subject\": { \"type\": \"string\" },\n    \"body\": { \"type\": \"string\" }\n  },\n  \"required\": [\"email\", \"subject\", \"body\"]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        592,
+        208
+      ],
+      "id": "f2a202fd-fef6-4c09-b566-0199347a3284",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "toRecipients": "={{ $json.output.email }}",
+        "subject": "={{ $json.output.subject }}",
+        "bodyContent": "={{ $json.output.body }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        816,
+        0
+      ],
+      "id": "87cd4ebf-c4a0-42b5-8cc8-f9f76c444053",
+      "name": "Send a message",
+      "webhookId": "152e6d67-fda3-4d06-ab10-254d725ad2f9",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "k5tCc6gX8sXTMqVc",
+          "name": "Microsoft Outlook account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Microsoft SQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft SQL": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "ca0c33aa-1148-4a6c-bd08-324c8e454618",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cf569ad02d4b92c0207b0cbe1c2da741e2526e436fd222cb3544ed3b438221db"
+  },
+  "nodeGroups": [],
+  "id": "CWgba2PsxKZl7m7a",
+  "tags": []
+}
